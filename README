@@ -8,17 +8,16 @@ ingredients to cook bigger python apps.
 
 ### FILES:
 
-
-* **template.py**:
-
- Basic template for my scripts.
-
- Also implements a basic check for the required modules, and show an error
-message if nedeed.
-
-
 * **logger.py**:
 
  A module that create a log object to log script messages in a elegant way.
  The Logger class can be embedded into the script too.
+ 
+* **template.py**:
+
+ Basic template for my scripts. Also implements a basic check for the required 
+ modules, and show an error message if nedeed.
+
+
+
 
