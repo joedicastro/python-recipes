@@ -13,6 +13,11 @@ ingredients to cook bigger python apps.
  A module that create a log object to log script messages in a elegant way.
  The Logger class can be embedded into the script too.
  
+* **notify.py**:
+
+ Send notification status messages through libnotify. These are popup messages 
+ typical in some Linux distros like Ubuntu.
+
 * **template.py**:
 
  Basic template for my scripts. Also implements a basic check for the required 
