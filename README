@@ -8,6 +8,10 @@ ingredients to cook bigger python apps.
 
 ### FILES:
 
+* **flatten_nested_lists**:
+
+ They are not mine, seen out there. Various ways to flatten a nested list.
+
 * **logger.py**:
 
  A module that create a log object to log script messages in a elegant way.
