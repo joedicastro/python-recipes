@@ -10,7 +10,7 @@ ingredients to cook bigger python apps.
 
 * **flatten_nested_lists**:
 
- They are not mine, seen out there. Various ways to flatten a nested list.
+ *They are not mine, seen out there*. Various ways to flatten a nested list.
 
 * **logger.py**:
 
@@ -26,7 +26,5 @@ ingredients to cook bigger python apps.
 
  Basic template for my scripts. Also implements a basic check for the required 
  modules, and show an error message if nedeed.
-
-
 
 
