@@ -22,6 +22,11 @@ ingredients to cook bigger python apps.
  Send notification status messages through libnotify. These are popup messages 
  typical in some Linux distros like Ubuntu.
 
+* **shuffle.py**:
+
+ *Obviously not mine, various famous algorithms*. Various ways to do an 
+ efficient and rigorous random shuffle from a set. Guaranteeed unbiased result. 
+
 * **template.py**:
 
  Basic template for my scripts. Also implements a basic check for the required 
