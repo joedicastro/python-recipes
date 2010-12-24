@@ -8,7 +8,7 @@ ingredients to cook bigger python apps.
 
 ### FILES:
 
-* **flatten_nested_lists**:
+* **flatten_nested_lists.py**:
 
  *They are not mine, seen out there*. Various ways to flatten a nested list.
 
@@ -32,4 +32,7 @@ ingredients to cook bigger python apps.
  Basic template for my scripts. Also implements a basic check for the required 
  modules, and show an error message if nedeed.
 
+* *test_dir_tree.py**:
 
+ Creates a fake hierarchy of directories and files.  A complete directory tree 
+ mainly for testing. Latin words used to be more user friendly and readable.
