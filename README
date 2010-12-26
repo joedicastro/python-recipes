@@ -16,7 +16,7 @@ ingredients to cook bigger python apps.
 
  A module that create a log object to log script messages in a elegant way.
  The Logger class can be embedded into the script too.
- 
+
 * **notify.py**:
 
  Send notification status messages through libnotify. These are popup messages 
@@ -46,3 +46,9 @@ ingredients to cook bigger python apps.
 
  Creates a fake hierarchy of directories and files.  A complete directory tree 
  mainly for testing. Latin words used to be more user friendly and readable.
+
+* **web_lxml.py**:
+
+ Reads a webpage with lxml and prints its element tree. Prints the structure of
+ the object element, which is a list of lists, a tree structure. We use it to 
+ locate those elements you want to parse to extract the necessary data.

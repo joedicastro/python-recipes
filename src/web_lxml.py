@@ -2,11 +2,13 @@
 # -*- coding: utf8 -*-
 
 """
-    smtp_server_test.py: Create a local SMTP server for test purposes
+    web_lxml.py: Reads a webpage with lxml and prints its element tree. 
 """
 
 #===============================================================================
-# Create a local SMTP server for test purposes.
+# Reads a webpage with lxml and prints its element tree. Prints the structure of
+# the object element, which is a list of lists, a tree structure. We use it to 
+# locate those elements you want to parse to extract the necessary data.
 #===============================================================================
 
 #===============================================================================
@@ -34,27 +36,38 @@ __version__ = "0.1"
 try:
     import sys
     import os
-    import asyncore
-    import smtpd
+    import urllib2
+    import lxml.html
 except ImportError:
     # Checks the installation of the necessary python modules 
     print((os.linesep * 2).join(["An error found importing one module:",
     str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
 
-def smtp_server(port):
-    """Starts a smtp server for test purposes."""
-    smtpd.DebuggingServer(("localhost", port), None)
+
+def read_web(url):
+    """Read a HTML web page, parses it and converts to a lxml element."""
+    element = lxml.html.fromstring(urllib2.urlopen(url).read())
+    return element
+
+def print_tree(branch, idx=""):
+    """Prints the structure of the object element, which is a list of lists, a 
+    tree structure. We use it to locate those elements you want to parse to 
+    extract the necessary data"""
+    if not branch.getchildren():
+        print("{0} - {1} - {2}{3}".format(idx, branch.tag, branch.text,
+                                          os.linesep))
+    else:
+        print("{0} - {1} - {2}{3}".format(idx, branch.tag, branch.text,
+                                          os.linesep))
+        for subtree in xrange(0, len(branch)):
+            print_tree(branch[subtree], ("{0}[{1}]".format(idx, subtree)))
 
 
 def main():
     """Main section"""
 
-    smtp_server(8025)
-    try:
-        asyncore.loop()
-    except KeyboardInterrupt:
-        pass
+    print_tree(read_web("http://google.com"))
 
 if __name__ == "__main__":
     main()
