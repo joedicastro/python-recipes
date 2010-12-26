@@ -22,10 +22,20 @@ ingredients to cook bigger python apps.
  Send notification status messages through libnotify. These are popup messages 
  typical in some Linux distros like Ubuntu.
 
+* **send_email.py**:
+ 
+ This file provides various ways to send an email with python. From the simplest 
+ method using the local user and server (in *NIX systems), to the more complex, 
+ with the ability to add attachments and use the e-mail fields Cc: and Bcc:
+ 
 * **shuffle.py**:
 
  *Obviously not mine, various famous algorithms*. Various ways to do an 
  efficient and rigorous random shuffle from a set. Guaranteeed unbiased result. 
+
+* **smtp_server_test.py**: 
+
+ Create a local SMTP server for test purposes.
 
 * **template.py**:
 
