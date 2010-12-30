@@ -12,6 +12,12 @@ ingredients to cook bigger python apps.
 
  *They are not mine, seen out there*. Various ways to flatten a nested list.
 
+* **get_size.py**:
+
+ Various ways to calculate the size of a directory tree or a single file.
+ Include methods to convert a size in bytes to the best standard IEC binary
+ prefix to improve readability.
+
 * **logger.py**:
 
  A module that create a log object to log script messages in a elegant way.

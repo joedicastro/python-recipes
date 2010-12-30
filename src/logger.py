@@ -57,9 +57,9 @@ class Logger():
     """
 
     def __init__(self):
-        """Create the object Logger itself and set various variables.
+        """Create the object Logger itself and set various attributes.
 
-        These variables are about the python file wich invokes this module:
+        These attributes are about the python file wich invokes this module:
 
         __script_vers = The version of python file which invokes this module
         __script_name = The name of the python file which invokes this module
