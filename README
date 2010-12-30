@@ -6,11 +6,19 @@ A set of various classes, modules, templates... like a bunch of recipes or
 ingredients to cook bigger python apps.
 
 
-### FILES:
+### Files in ./src/
 
 * **flatten_nested_lists.py**:
 
  *They are not mine, seen out there*. Various ways to flatten a nested list.
+
+* **ftp_server_test.py**:
+
+ Create a ftp server for test purposes.
+
+* **ftp_upload.py**:
+
+ A method to upload a file to a FTP server
 
 * **get_size.py**:
 

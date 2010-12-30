@@ -119,18 +119,18 @@ def best_unit_size(bytes_size):
 
     Return a dictionary with three pair of keys/values:
 
-    's' -- (float) Size of path converted to the best unit for easy read
-    'u' -- (str) The prefix (IEC) for s (from bytes(2^0) to YiB(2^80))
-    'b' -- (int / long) The original size in bytes
+    "s" -- (float) Size of path converted to the best unit for easy read
+    "u" -- (str) The prefix (IEC) for s (from bytes(2^0) to YiB(2^80))
+    "b" -- (int / long) The original size in bytes
 
     """
     for exp in range(0, 90 , 10):
         bu_size = abs(bytes_size) / pow(2.0, exp)
         if int(bu_size) < 2 ** 10:
-            unit = {0:'bytes', 10:'KiB', 20:'MiB', 30:'GiB', 40:'TiB', 50:'PiB',
-                    60:'EiB', 70:'ZiB', 80:'YiB'}[exp]
+            unit = {0:"bytes", 10:"KiB", 20:"MiB", 30:"GiB", 40:"TiB", 50:"PiB",
+                    60:"EiB", 70:"ZiB", 80:"YiB"}[exp]
             break
-    return {'s':bu_size, 'u':unit, 'b':bytes_size}
+    return {"s":bu_size, "u":unit, "b":bytes_size}
 
 
 # Combination of calculating the size in bytes and conversion to best IEC prefix
@@ -140,9 +140,9 @@ def get_unit_size(the_path):
 
     Return a dictionary with three pair of keys/values:
 
-    's' -- (float) Size of path converted to the best unit for easy read
-    'u' -- (str) The prefix (IEC) for s (from bytes(2^0) to YiB(2^80))
-    'b' -- (int / long) The original size in bytes
+    "s" -- (float) Size of path converted to the best unit for easy read
+    "u" -- (str) The prefix (IEC) for s (from bytes(2^0) to YiB(2^80))
+    "b" -- (int / long) The original size in bytes
 
     """
 
@@ -157,10 +157,10 @@ def get_unit_size(the_path):
     for exp in range(0, 90 , 10):
         bu_size = abs(bytes_size) / pow(2.0, exp)
         if int(bu_size) < 2 ** 10:
-            unit = {0:'bytes', 10:'KiB', 20:'MiB', 30:'GiB', 40:'TiB', 50:'PiB',
-                    60:'EiB', 70:'ZiB', 80:'YiB'}[exp]
+            unit = {0:"bytes", 10:"KiB", 20:"MiB", 30:"GiB", 40:"TiB", 50:"PiB",
+                    60:"EiB", 70:"ZiB", 80:"YiB"}[exp]
             break
-    return {'s':bu_size, 'u':unit, 'b':bytes_size}
+    return {"s":bu_size, "u":unit, "b":bytes_size}
 
 
 class GetSize:
@@ -183,7 +183,7 @@ class GetSize:
         """
         self.bytes = 0
         self.size = 0
-        self.unit = 'bytes'
+        self.unit = "bytes"
 
     def from_bytes(self, sz_bytes):
         """Get size & IEC prefix from size in bytes."""
@@ -191,8 +191,8 @@ class GetSize:
         for exp in range(0, 90 , 10):
             self.size = abs(self.bytes) / pow(2.0, exp)
             if int(self.size) < 2 ** 10:
-                self.unit = {0:'bytes', 10:'KiB', 20:'MiB', 30:'GiB', 40:'TiB',
-                             50:'PiB', 60:'EiB', 70:'ZiB', 80:'YiB'}[exp]
+                self.unit = {0:"bytes", 10:"KiB", 20:"MiB", 30:"GiB", 40:"TiB",
+                             50:"PiB", 60:"EiB", 70:"ZiB", 80:"YiB"}[exp]
                 break
 
     def from_path(self, a_path):
@@ -229,7 +229,7 @@ def main():
     tm_du = time.time() - tm_du_start
     sz_du = best_unit_size(bytes_du)
     print("{0:.1f} {1} {2:12}         n/a {3:12.4f}s".
-          format(sz_du['s'], sz_du['u'], sz_du['b'], tm_du) + os.linesep)
+          format(sz_du["s"], sz_du["u"], sz_du["b"], tm_du) + os.linesep)
 
     # Show results of the distinct Python methods to compare speed & precision
     for fnct in functions:
@@ -237,18 +237,18 @@ def main():
         print(fname.center(50) + os.linesep + ("-"* len(fname)).center(50))
         bytes_fn, time_fn = timeit(fnct, my_path)
         sz_fn = best_unit_size(bytes_fn)
-        diff_fn = best_unit_size(bytes_du - sz_fn['b'])
+        diff_fn = best_unit_size(bytes_du - sz_fn["b"])
         print("{0:.1f} {1} {2:12} {3:10.2f} {4:5}{5:8.4f}s".
-              format(sz_fn['s'], sz_fn['u'], sz_fn['b'], diff_fn['s'],
-                     diff_fn['u'], time_fn) + os.linesep)
+              format(sz_fn["s"], sz_fn["u"], sz_fn["b"], diff_fn["s"],
+                     diff_fn["u"], time_fn) + os.linesep)
 
     # get_unit_size as a combination of two functions requires separate code
     print("get_unit_size".center(50) + os.linesep + ("-" * 13).center(50))
     sz_gus, tm_gus = timeit(get_unit_size, my_path)
-    diff_gus = best_unit_size(bytes_du - sz_gus['b'])
+    diff_gus = best_unit_size(bytes_du - sz_gus["b"])
     print("{0:.1f} {1} {2:12} {3:10.2f} {4:5}{5:8.4f}s".
-          format(sz_gus['s'], sz_gus['u'], sz_gus['b'], diff_gus['s'],
-                 diff_gus['u'], tm_gus) + os.linesep)
+          format(sz_gus["s"], sz_gus["u"], sz_gus["b"], diff_gus["s"],
+                 diff_gus["u"], tm_gus) + os.linesep)
 
     # shows results from GetSize class
     print("GetSize Class".center(50) + os.linesep + ("-" * 13).center(50))
