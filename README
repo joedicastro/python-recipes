@@ -8,6 +8,11 @@ ingredients to cook bigger python apps.
 
 ### Files in ./src/
 
+* **check_execs.py**:
+ 
+ Check if an executable program is present in the system. Useful for those 
+ scripts that requires external programs and don't have an install process.
+
 * **flatten_nested_lists.py**:
 
  *They are not mine, seen out there*. Various ways to flatten a nested list.
