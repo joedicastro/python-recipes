@@ -36,6 +36,11 @@ ingredients to cook bigger python apps.
  A module that create a log object to log script messages in a elegant way.
  The Logger class can be embedded into the script too.
 
+* **move_by_ext.py**:
+
+ A script that find files by a given extension into a directory hierarchy and 
+ then move (or copy/remove) all of them to the given destination path.
+
 * **notify.py**:
 
  Send notification status messages through libnotify. These are popup messages 

@@ -166,8 +166,8 @@ def get_unit_size(the_path):
 class GetSize:
     """Create a GetSize object that converts size(bytes) to the best IEC prefix.
 
-    The size of this object can be obtained from a path (directory or file) or 
-    from a size in bytes. 
+    The size of this object can be obtained from a path (directory or file) or
+    from a size in bytes.
 
     """
 
