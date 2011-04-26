@@ -39,7 +39,7 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "2/04/2011"
+__date__ = "26/04/2011"
 __version__ = "0.1"
 
 try:
