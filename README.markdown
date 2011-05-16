@@ -1,5 +1,3 @@
-<!-- -*- markdown -*- -->
-
 # Python Recipes
 
 A set of various classes, modules, templates... like a bunch of recipes or
@@ -12,6 +10,12 @@ ingredients to cook bigger python apps.
  
  Check if an executable program is present in the system. Useful for those 
  scripts that requires external programs and don't have an install process.
+
+* **dir_size_monitor.py**:
+
+ This script monitors the changes in disk size for the directories included in
+ a given path. It reports what directories are new or deleted. Also reports the
+ directories in which their size increases or decreases above threshold values.
 
 * **dpkg_diff.py**:
 
