@@ -36,8 +36,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "16/05/2011"
-__version__ = "0.1"
+__date__ = "17/05/2011"
+__version__ = "0.2"
 
 try:
     import sys
@@ -68,7 +68,7 @@ def diff4log(before, current, wpath, dirs, threshold_pct=0, threshold_sz=0):
     for ddir in sorted(dirs):
         pct = (((current[ddir] - float(before[ddir])) / before[ddir]) * 100.0)
         diff = current[ddir] - before[ddir]
-        if pct >= threshold_pct and diff > threshold_sz:
+        if abs(pct) >= threshold_pct and abs(diff) > threshold_sz:
             dsz = best_unit_size(diff)
             llst.append(" {0:8.2f} % {1:8.1f} {2}   ./{3}".
                         format(pct, dsz['s'], dsz['u'], os.path.relpath(ddir,
@@ -76,7 +76,7 @@ def diff4log(before, current, wpath, dirs, threshold_pct=0, threshold_sz=0):
     return llst
 
 
-def main():
+def main(first_exec=False):
     """Main section"""
     # The path to monitor changes in directories dir_size
     mon_pth = "/your/path/to/monitor"
@@ -96,10 +96,11 @@ def main():
 
     # Load the last dictionary of directories/sizes if exists
     try:
-        with open('dir_sizes.pkl', 'rb') as input_file:
+        with open('.dir_sizes.pkl', 'rb') as input_file:
             bfr_dir = pickle.load(input_file)
     except (EOFError, IOError, pickle.PickleError):
         bfr_dir = {}
+        first_exec = True
 
     # Get the current dictionary of directories/sizes
     crr_dir = {}
@@ -110,7 +111,7 @@ def main():
             crr_dir[dir_path] = dir_size
 
     # First, Save the current dirs/sizes
-    with open("dir_sizes.pkl", "wb") as output_file:
+    with open(".dir_sizes.pkl", "wb") as output_file:
         pickle.dump(crr_dir, output_file)
 
     # Create the list depending the status of directories
@@ -139,7 +140,9 @@ def main():
              ["{0:8} directories".format(len(crr_dir)),
               "{0:8.2f} {1}".format(mon_pth_sz['s'], mon_pth_sz['u'])])
     log.time("END TIME")
-    log.send("Changes in size of directories")
+    if not first_exec:
+        log.send("Changes in size of directories")
+        log.write()
 
 if __name__ == "__main__":
     main()
