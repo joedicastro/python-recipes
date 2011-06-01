@@ -6,7 +6,7 @@
 """
 
 __date__ = "1/06/2011"
-__version__ = "0.2"
+__version__ = "0.3"
 
 try:
     import csv
@@ -43,7 +43,7 @@ def flat_slice(lst):
     return lst
 
 # Seen at http://kogs-www.informatik.uni-hamburg.de/~meine/python_tricks
-# Good performance, but recursive (initial python recursion limit = 1K levels) 
+# Good performance, but recursive (initial python recursion limit = 1K levels)
 def flat_list(lst):
     """Flatten a nested list without using generators."""
     result = []
@@ -118,12 +118,12 @@ def flattener_sum(lst):
 # This function generates nested lists, with the desired number of elements and
 # levels of nesting. It's composed of integers and strings or only integers.
 # It's intended to generate a regular structure, whatever the number of elements
-# or levels. The intention is that when measuring performance, you get regular 
-# results in order to measure with precision the variation in performance 
-# depending on the number of elements and / or levels. This structure is like a 
-# list of nested lists, as a metaphor in the real world would be a field of 
-# ziggurats (stone step pyramids), hence its name. As an option you can create 
-# lists that contain generators to test that functions are not capable of 
+# or levels. The intention is that when measuring performance, you get regular
+# results in order to measure with precision the variation in performance
+# depending on the number of elements and / or levels. This structure is like a
+# list of nested lists, as a metaphor in the real world would be a field of
+# ziggurats (stone step pyramids), hence its name. As an option you can create
+# lists that contain generators to test that functions are not capable of
 # handling these items.
 
 def ziggurat(stones=1, steps=1, with_iters=False, only_numbers=False):
@@ -193,7 +193,7 @@ if __name__ == "__main__":
 
     ### In this part will run performance tests for the first methods shown up
     ### If matplotlib is installed, plot and show the test GRAPHS, however the
-    ### test results are stored in csv files. 
+    ### test results are stored in csv files.
 
     # The functions to test and the needed setup for timeit.
     DEFS = [f.__name__ for f in (flat_slice, flat_list, flat_sum, flat_yield)]
@@ -205,13 +205,13 @@ if __name__ == "__main__":
     CUR.execute("""create table results
                 (graph text, def text, num int, lvl int, time real)""")
 
-    # Define the values needed for each test (cases and graphs paramaters) 
+    # Define the values needed for each test (cases and graphs paramaters)
     GRAPHS = [(0, u"elements ↑ | = levels",
-               [(n, 10) for n in range(20, 340, 10)], 311),
+               [(n, 10) for n in range(20, 1410, 10)], 311),
               (1, u"elements = | ↑ levels",
-               [(10, n) for n in range(10, 310, 10)], 312),
+               [(10, n) for n in range(10, 1610, 10)], 312),
               (2, u"elements ↑ | ↑ levels",
-               [(n * 2 , n) for n in range(10, 310, 10)], 313)]
+               [(n * 2 , n) for n in range(10, 1610, 10)], 313)]
 
     # Prepare the plot
     if not NO_GRAPHS:
@@ -228,9 +228,11 @@ if __name__ == "__main__":
                     CUR.execute("insert into results values (?, ?, ?, ?, ?)",
                                 (graph, f, n, l, tim * 1e2))
                 except:
-                    # Uncomment only for debugging
+                    # Uncomment only for debugging. It Normally Fail when reach 
+                    # Python recursion limit (1K levels)
                     #print("{0} error: {1}".format(f, str(sys.exc_info()[1])))
-                    pass
+                    CUR.execute("insert into results values (?, ?, ?, ?, ?)",
+                                (graph, f, n, l, None))
 
         # Create the graphs
         if not NO_GRAPHS:
@@ -251,7 +253,7 @@ if __name__ == "__main__":
         results = csv.writer(open("test_results_{0}.csv".format(idx), "w"))
         results.writerow(["elements", "levels"] + (DEFS))
         for cnum, clvl in cases:
-            CUR.execute("""SELECT time FROM results WHERE graph=? and 
+            CUR.execute("""SELECT time FROM results WHERE graph=? and
                         num=? and lvl=?""", (graph, cnum, clvl))
             row = ([str(r[0]).replace(".", ",") for r in CUR.fetchall()])
             results.writerow([cnum, clvl, row[0], row[1], row[2], row[3]])
