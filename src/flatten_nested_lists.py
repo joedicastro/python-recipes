@@ -5,8 +5,8 @@
     flatten_nested_lists.py: Various ways to flatten a nested list.
 """
 
-__date__ = "1/06/2011"
-__version__ = "0.3"
+__date__ = "4/06/2011"
+__version__ = "0.4"
 
 try:
     import csv
@@ -221,8 +221,17 @@ if __name__ == "__main__":
     # Do the performance tests for each graph. 10 iterations x function & case.
     for idx, graph, cases, pos in GRAPHS:
         for n, l in cases:
-            nlst = ziggurat(n, l)
+            with_iterables = False
+            if not with_iterables:
+                nlst = ziggurat(n, l, with_iterables)
             for f in DEFS:
+                # I know, is not the same list for all the functions, but it
+                # is the problem with iterables, they are single use only. 
+                # Anyway the list structure is the same, just change the 
+                # elements. So do not alter the results, only slows the test 
+                # process.
+                if with_iterables:
+                    nlst = ziggurat(n, l, with_iterables)
                 try:
                     tim = timeit.timeit("%s(nlst)" % f, SETUP, number=10)
                     CUR.execute("insert into results values (?, ?, ?, ?, ?)",
