@@ -5,22 +5,27 @@
     shuffle.py: Various ways to shuffle an array of elements
 """
 
-__date__ = "24/12/2010"
-__version__ = "0.1"
+__date__ = "08/06/2011"
+__version__ = "0.2"
 
 try:
-    import sys
+    import csv
     import os
     import random # You only needs this module for algorithms
-    from re import sub
+    import sys
     from itertools import permutations
-    from math import factorial
 except ImportError:
     # Checks the installation of the necessary python modules 
     print((os.linesep * 2).join(["An error found importing one module:",
     str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
 
+try:
+    import matplotlib.pyplot as plt
+    from matplotlib.figure import SubplotParams
+    NO_GRAPHS = False
+except ImportError:
+    NO_GRAPHS = True
 
 # The original algorithm (1938) by Ronald Fisher and Frank Yates, implemented 
 # in Python
@@ -62,42 +67,92 @@ def sattolo_cycle(lst):
 def main(iterations, array):
     """An example of these algorithms"""
 
-    def definitions():
-        """Reset the variables for each algorithm"""
-        # All possible combinations as string in a dictionary with a counter of 
-        # apparitions reset to 0
-        combos = dict(zip((sub("[^\d ]", "", (str(i)))
-                           for i in permutations(array)),
-                           [0 for i in range(factorial(len(array)))]))
-        mean = ((iterations / len(combos)) * 100.0) / iterations
-        return array, combos, mean, []
+    def faulty(lst):
+        "An example of a intuitive but very bad algorithm."
+        lst_length = len(lst)
+        for i in range(lst_length):
+            j = random.randrange(lst_length)
+            lst[i], lst[j] = lst[j], lst[i]
 
-    for algorithm in [fisher_yates, knuth_durstenfeld, sattolo_cycle]:
-        lst, combos, mean, deviations = definitions()
-        for iter in range(iterations):
-            algorithm(lst)
-            combos[sub("[^\d ]", "", str(lst))] += 1
+    # The functions to test and the dictionary where store the results for each
+    # possible permutation
+    defs = [fisher_yates, knuth_durstenfeld, faulty]
+    stats = {"".join([str(ch) for ch in pm]):{func.__name__:0 for func in defs}
+             for pm in permutations(array)}
 
-        # print the header for each algorithm
-        print(algorithm.__name__.title().replace("_", "-").center(38))
-        print(("=" * (len(algorithm.__name__) + 2)).center(38) + os.linesep)
-        print(" " * ((len(lst) * 2) - 6) + "Combo  Appears  Percent  Deviation")
-        print(" " * ((len(lst) * 2) - 6) + "-----  -------  -------  ---------")
+    # Do the test. Always starting from the same array. Cause shuffle functions 
+    # are in-place operations, use str() & eval() to not alter the results.
+    array = str(array)
+    for func in defs:
+        for i in range(iterations):
+            lst = eval(array)
+            func(lst)
+            stats["".join([str(e) for e in lst])][func.__name__] += 1
 
-        for combo in sorted(combos):
-            percent = (combos[combo] * 100.0) / iterations
+    num_prm = len(stats) # number of permutations
+    ideal = iterations / num_prm
+    mean = ((iterations / float(num_prm)) * 100) / iterations
+
+    # Prepare the graphs
+    splot_pars = SubplotParams(wspace=0.4, left=0.08, right=0.97, top=0.92)
+    plt.figure(1, figsize=(6, 5), subplotpars=splot_pars)
+
+    # Let's prepare the results for presentation
+    for idx, fnc in enumerate([f.__name__ for f in defs], 1):
+        deviations = []
+
+        ## Store test results in a csv file and print to screen
+        csvf = csv.writer(open("shuffle_{0}.csv".format(fnc), "w"))
+        csvf.writerow(["Algorithm", fnc.replace("_", "-").title()])
+        csvf.writerow(["Initial Array", array])
+        csvf.writerow(["Iterations", iterations])
+        csvf.writerow(["Ideal number of times", ideal])
+        csvf.writerow([])
+        csvf.writerow(["Permutation", "Times", "Bias", "Percent", "Deviation"])
+        print(fnc.title().replace("_", "-").center(50))
+        print(("=" * (len(fnc) + 2)).center(50) + os.linesep)
+        print(" Permutation    Times     Bias    Percent   Deviation")
+        print("------------- --------- -------- --------- -----------")
+
+        for permu in sorted(stats):
+            # do the calcs
+            times = stats[permu][fnc]
+            bias = times - ideal
+            percent = (times * 100.0) / iterations
             deviation = percent - mean
             deviations.append(abs(deviation))
-            # print the combinations and his apparitions, percentage of total 
-            # and deviation from mean
-            print("{0}  {1:7}{2:8.2f}%{3:10.3f}%".format(combo, combos[combo],
-                                                         percent, deviation))
 
+            csvf.writerow([permu, times, bias, str(percent).replace(".", ","),
+                          str(deviation).replace(".", ",")])
+            print("{0:10} {1:10} {2:10} {3:9.2f} {4:11.3f}".
+                  format(permu, times, bias, percent, deviation))
+
+        # calculate mean deviation
         mean_deviation = sum(deviations) / len(deviations)
-        # Print the mean deviation of each algorithm
-        print(os.linesep + 'Mean deviation:'.center(38))
-        print('\302\261{0:.3f}%'.format(mean_deviation).center(38) + os.linesep)
+
+        csvf.writerow([])
+        csvf.writerow(["Mean Deviation", "" , "", "",
+                       str(mean_deviation).replace(".", ",")])
+        print(os.linesep + 'Mean deviation:'.center(50))
+        print('\302\261{0:.3f}%'.format(mean_deviation).center(50) + os.linesep)
+
+        # Plot the bar graphs
+        plt.subplot(int("1{0}{1}".format(len(defs), idx)))
+        values = ([stats[p][fnc] - ideal for p in sorted(stats, reverse=True)])
+        plt.barh(range(1, num_prm + 1), values, 0.65, align="center", label=fnc,
+                 color={1:"#CAF3C8", 2:"#C3D4FD", 3:"#FACEC8"}.get(idx, "y"))
+        plt.title(fnc.replace("_", " ").title(), color="#123A78", fontsize=14)
+        plt.xlabel("bias")
+        plt.grid(True, color="0.6")
+        plt.yticks(range(1, num_prm + 1), [a for a in sorted(stats, reverse=1)],
+                   family="monospace", weight="bold", fontsize=10)
+        xlbls = [i / 2 for i in range(-ideal, ideal + (ideal / 2), ideal / 2)]
+        plt.xticks(xlbls, xlbls, fontsize=9, family="monospace")
+
+    # Show and save the graphs
+    plt.savefig("shuffle_algorithms")
+    plt.show()
 
 
 if __name__ == "__main__":
-    main(60000, [1, 2, 3]) # Number of iterations & Sample numeric array
+    main(24000 , ['A', 'K', 'Q', 'J']) # Number of iterations & Sample array
