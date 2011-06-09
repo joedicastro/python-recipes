@@ -5,8 +5,8 @@
     shuffle.py: Various ways to shuffle an array of elements
 """
 
-__date__ = "08/06/2011"
-__version__ = "0.2"
+__date__ = "09/06/2011"
+__version__ = "0.3"
 
 try:
     import csv
@@ -14,6 +14,7 @@ try:
     import random # You only needs this module for algorithms
     import sys
     from itertools import permutations
+    from math import sqrt
 except ImportError:
     # Checks the installation of the necessary python modules 
     print((os.linesep * 2).join(["An error found importing one module:",
@@ -100,6 +101,7 @@ def main(iterations, array):
     # Let's prepare the results for presentation
     for idx, fnc in enumerate([f.__name__ for f in defs], 1):
         deviations = []
+        biases = []
 
         ## Store test results in a csv file and print to screen
         csvf = csv.writer(open("shuffle_{0}.csv".format(fnc), "w"))
@@ -118,6 +120,7 @@ def main(iterations, array):
             # do the calcs
             times = stats[permu][fnc]
             bias = times - ideal
+            biases.append(bias)
             percent = (times * 100.0) / iterations
             deviation = percent - mean
             deviations.append(abs(deviation))
@@ -127,12 +130,23 @@ def main(iterations, array):
             print("{0:10} {1:10} {2:10} {3:9.2f} {4:11.3f}".
                   format(permu, times, bias, percent, deviation))
 
+
+        # calculate the standard deviation
+        std_deviation = sqrt(sum([pow(b, 2) for b in biases]) / len(biases))
+
         # calculate mean deviation
         mean_deviation = sum(deviations) / len(deviations)
 
         csvf.writerow([])
+        csvf.writerow(["Standard Deviation", "" , "", "",
+                       str(std_deviation).replace(".", ",")])
+        csvf.writerow([])
         csvf.writerow(["Mean Deviation", "" , "", "",
                        str(mean_deviation).replace(".", ",")])
+
+        print(os.linesep + 'Standard deviation:'.center(50))
+        print('{0:.3f}'.format(std_deviation).center(50))
+
         print(os.linesep + 'Mean deviation:'.center(50))
         print('\302\261{0:.3f}%'.format(mean_deviation).center(50) + os.linesep)
 
