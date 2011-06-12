@@ -28,8 +28,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "21/12/2010"
-__version__ = "0.1"
+__date__ = "12/06/2011"
+__version__ = "0.2"
 
 # Notify it's not essential and libnotify it's not always installed (in Ubuntu &
 # Debian it's optional) but it's very useful to show popup messages
@@ -40,27 +40,30 @@ try:
 except ImportError:
     NOT_NOTIFY = True
 
-def notify(title, msg, status):
-    """Send notification status messages through libnotify.
+def notify(title, msg, icon):
+    """Send notification icon messages through libnotify.
 
     Parameters:
 
     (str) title -- The notification title
     (str) msg -- The message to display into notification
-    (str) status -- Type of notification status (ok|info|error|warm|ask|sync)
+    (str / uri) icon -- Type of icon (ok|info|error|warm|ask|sync) or icon file
 
     """
     if NOT_NOTIFY:
         return
     if not pynotify.is_initted():
         pynotify.init(title)
-    note = pynotify.Notification(title, msg)
-    helper = gtk.Button()
-    icons = {'ok':gtk.STOCK_YES, 'info':gtk.STOCK_DIALOG_INFO,
-             'error':gtk.STOCK_DIALOG_ERROR, 'warm':gtk.STOCK_DIALOG_WARNING,
-             'ask':gtk.STOCK_DIALOG_QUESTION, 'sync':gtk.STOCK_JUMP_TO}
-    icon = helper.render_icon(icons[status], gtk.ICON_SIZE_BUTTON)
-    note.set_icon_from_pixbuf(icon)
+    gtk_icon = {'ok':gtk.STOCK_YES, 'info':gtk.STOCK_DIALOG_INFO,
+                'error':gtk.STOCK_DIALOG_ERROR, 'warm':gtk.STOCK_DIALOG_WARNING,
+                'ask':gtk.STOCK_DIALOG_QUESTION, 'sync':gtk.STOCK_JUMP_TO}
+    try:
+        note = pynotify.Notification(title, msg)
+        helper = gtk.Button()
+        gtk_icon = helper.render_icon(gtk_icon[icon], gtk.ICON_SIZE_BUTTON)
+        note.set_icon_from_pixbuf(gtk_icon)
+    except KeyError:
+        note = pynotify.Notification(title, msg, icon)
     note.show()
 
 
@@ -72,6 +75,8 @@ def main():
     notify('TEST', 'This is a Warm Message', 'warm')
     notify('TEST', 'This is an Ask Message', 'ask')
     notify('TEST', 'This is an Sync Message', 'sync')
+    notify("TEST", "This is a Personalized Icon Message",
+           "/usr/share/icons/gnome/scalable/places/ubuntu-logo.svg")
 
 
 if __name__ == "__main__":
