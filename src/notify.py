@@ -40,7 +40,7 @@ try:
 except ImportError:
     NOT_NOTIFY = True
 
-def notify(title, msg, icon):
+def notify(title, msg, icon=None):
     """Send notification icon messages through libnotify.
 
     Parameters:
