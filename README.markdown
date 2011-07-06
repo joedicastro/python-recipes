@@ -55,6 +55,10 @@ ingredients to cook bigger python apps.
  Send notification status messages through libnotify. These are popup messages 
  typical in some Linux distros like Ubuntu.
 
+* **rsync_fabfile.py**:
+
+ A Fabric file for sync two directories (remote ⇄ local) with rsync.
+
 * **send_email.py**:
  
  This file provides various ways to send an email with python. From the simplest 
