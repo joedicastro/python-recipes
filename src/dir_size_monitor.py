@@ -36,8 +36,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "17/05/2011"
-__version__ = "0.2"
+__date__ = "06/07/2011"
+__version__ = "0.3"
 
 try:
     import sys
@@ -45,6 +45,7 @@ try:
     import platform
     import pickle
     import logger
+    from notify import notify
     from get_size import best_unit_size, get_size_fast
 except ImportError:
     # Checks the installation of the necessary python modules 
@@ -93,6 +94,7 @@ def main(first_exec=False):
             format(mon_pth, platform.node()))
     log.header(url, head)
     log.time("START TIME")
+    notify("Directory Size Monitor", "Start to check", "info")
 
     # Load the last dictionary of directories/sizes if exists
     try:
@@ -140,6 +142,7 @@ def main(first_exec=False):
              ["{0:8} directories".format(len(crr_dir)),
               "{0:8.2f} {1}".format(mon_pth_sz['s'], mon_pth_sz['u'])])
     log.time("END TIME")
+    notify("Directory Size Monitor", "Finished", "Ok")
     if not first_exec:
         log.send("Changes in size of directories")
         log.write()
