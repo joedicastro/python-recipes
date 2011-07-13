@@ -24,8 +24,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "11/07/2011"
-__version__ = "0.2"
+__date__ = "13/07/2011"
+__version__ = "0.3"
 
 import os
 import glob
@@ -84,13 +84,18 @@ def _log_start():
         LOG.__init__()
     LOG.time("Start time")
 
-def _log_end():
+def _log_end(task):
     """Create the End time info block and send & write the log."""
     _notify("Rsync", "Ended" , "ok")
     LOG.time("End time")
     LOG.free(os.linesep * 2)
     LOG.write(True)
-    LOG.send("Fabric Rsync")
+    LOG.send("Fabric Rsync ({0})".format(task))
+
+def _check_local():
+    """Create local directory if no exists."""
+    if not os.path.exists(env.local):
+        os.mkdir(env.local)
 
 def _rsync(source, target, delete):
     """Process the _rsync command."""
@@ -98,18 +103,19 @@ def _rsync(source, target, delete):
     LOG.header("Fabric Rsync\nhttp://code.joedicastro.com/python-recipes",
                "Syncing {0} to {1}".format(source, target))
     _notify("Rsync", "Start syncing {0} to {1}".format(source, target), "info")
-    out = local("rsync -pthrvz {0}/ {1} {2}".
+    out = local("rsync -pthrvz {2} {0}/ {1}".
                 format(source, target, "--delete" if delete == "yes" else ""),
                 capture=True)
     _notify("Rsync", "Finished synchronization", "ok")
     LOG.list("Rsync Output", out)
     if out.failed:
-        LOG.list("Error", out.stderr)
+        LOG.list("Rsync Errors", out.stderr)
 
 def _compress(path):
     """Compress a local directory into a gz file.
 
     Creates a file for each weekday, an removes the old files if exists"""
+    os.chdir(os.path.join(path, os.pardir))
     dir2gz = os.path.basename(path)
     old_gzs = glob.glob('{0}*{1}.tar.gz'.format(dir2gz, time.strftime('%a')))
     gz_name = "{0}_{1}.tar.gz".format(dir2gz, time.strftime('%d%b%Y_%H:%M_%a'))
@@ -125,9 +131,9 @@ def _compress(path):
 
 def _archive():
     """Archive the local directory in a gz file for each weekday."""
-    _notify('Compressing folder...', 'info')
+    _notify('Rsync', 'Compressing folder...', 'info')
     LOG.list('Rotate compressed copies', _compress(env.local))
-    _notify("Rsync", "Finished compression", "Ok")
+    _notify("Rsync", "Finished compression", "ok")
 
 def _get_diskspace():
     """Get the disk space used by the local directory and archives."""
@@ -142,19 +148,20 @@ def up(server=None, dlt='yes'):
     """Sync from local to remote."""
     globals()[server]() if server else None
     _rsync(env.local, ":".join([env.host_string, env.remote]), dlt)
-    _log_end()
+    _log_end(server)
 
 def down(server=None, dlt='yes', archive=False):
     """Sync from remote to local."""
     globals()[server]() if server else None
+    _check_local()
     _rsync(":".join([env.host_string, env.remote]), env.local, dlt)
     if not archive:
-        _log_end()
+        _log_end(server)
 
 def backup(server=None):
     """Sync from remote to local and archive the directory."""
     down(server, archive=True)
     _archive()
     _get_diskspace()
-    _log_end()
+    _log_end(server)
 
