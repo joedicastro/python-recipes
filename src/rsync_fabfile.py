@@ -50,14 +50,14 @@ env.local = "/your/local/path"
 
 # If wants to use various hosts, then define the previous variables like this, 
 # one function per host. 
-def host_1():
+def _host_1():
     """Host variables for host_1."""
     global env
     env.host_string = "username@host_1"
     env.remote = "/your/remote/path/in/host_1"
     env.local = "/your/local/path/for/host_1"
 
-def host_2():
+def _host_2():
     """Host variables for host_2."""
     global env
     env.host_string = "username@host_2"
@@ -66,7 +66,7 @@ def host_2():
 
 # ...
 #
-# def host_n():
+# def _host_n():
 #     """Host variables for host_n."""
 #     global env
 #     env.host_string = "username@host_n"
@@ -146,20 +146,20 @@ def _get_diskspace():
 
 def up(server=None, dlt='yes'):
     """Sync from local to remote."""
-    globals()[server]() if server else None
+    globals()["_" + server]() if server else None
     _rsync(env.local, ":".join([env.host_string, env.remote]), dlt)
     _log_end(server)
 
 def down(server=None, dlt='yes', archive=False):
     """Sync from remote to local."""
-    globals()[server]() if server else None
+    globals()["_" + server]() if server else None
     _check_local()
     _rsync(":".join([env.host_string, env.remote]), env.local, dlt)
     if not archive:
         _log_end(server)
 
 def backup(server=None):
-    """Sync from remote to local and archive the directory."""
+    """Sync from remote to local & archive the local directory."""
     down(server, archive=True)
     _archive()
     _get_diskspace()
