@@ -24,8 +24,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "13/07/2011"
-__version__ = "0.3"
+__date__ = "20/07/2011"
+__version__ = "0.4"
 
 import os
 import glob
@@ -155,6 +155,7 @@ def down(server=None, dlt='yes', archive=False):
     globals()["_" + server]() if server else None
     _check_local()
     _rsync(":".join([env.host_string, env.remote]), env.local, dlt)
+    _get_diskspace()
     if not archive:
         _log_end(server)
 
