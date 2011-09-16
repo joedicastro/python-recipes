@@ -28,8 +28,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "10/09/2010"
-__version__ = "0.3"
+__date__ = "16/09/2011"
+__version__ = "0.4"
 
 try:
     import sys
@@ -174,7 +174,7 @@ class Logger():
         return self.__log
 
     def send(self, subject, send_from='', dest_to='', mail_server='localhost',
-             server_user='', server_pass=''):
+             server_user='', server_pass='', attachments=None):
         """Send a email with the log.
 
         Arguments:
@@ -204,6 +204,17 @@ class Logger():
         message['Date'] = formatdate(localtime=True)
         message.preamble = "You'll not see this in a MIME-aware mail reader.\n"
         message.attach(MIMEText(self.__log))
+
+        # For all type of attachments
+        if attachments:
+            for att_file in attachments:
+                with open(att_file, "rb") as attmnt:
+                    att = MIMEBase("application", "octet-stream")
+                    att.set_payload(attmnt.read())
+                encoders.encode_base64(att)
+                att.add_header("content-disposition", "attachment",
+                               filename=os.path.basename(att_file))
+                message.attach(att)
 
         # initialize the mail server
         server = smtplib.SMTP()
