@@ -28,14 +28,15 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "26/12/2010"
-__version__ = "0.1"
+__date__ = "19/10/2011"
+__version__ = "0.2"
 
 try:
     import sys
     import os
     import socket
     import smtplib
+    import getpass
     from email import encoders
     from email.mime.base import MIMEBase
     from email.mime.text import MIMEText
@@ -52,7 +53,7 @@ except ImportError:
 def send_mail_local(subject, text):
     """Send a mail to the user's local mailbox."""
     # Set the local mail address for the script' user
-    email = "@".join([os.getenv("LOGNAME"), socket.gethostname()])
+    email = "@".join([getpass.getuser(), socket.gethostname()])
     msg = ("From: {0}\nTo: {0}\nSubject: {1}\n{2}".format(email, subject, text))
     server = smtplib.SMTP("localhost")
     server.sendmail(email, email, msg)
@@ -80,7 +81,7 @@ def send_mail(subject, text, send_from="", dest_to=None, server="localhost",
     is assumed instead. Useful for logging scripts
 
     """
-    local_email = "@".join([os.getenv("LOGNAME"), socket.gethostname()])
+    local_email = "@".join([getpass.getuser(), socket.gethostname()])
     send_from = send_from if send_from else local_email
     dest_to = dest_to if dest_to else [local_email]
 
@@ -148,7 +149,7 @@ def send_email(subject, text, send_from="", dest_to=None, attachments=None,
     is assumed instead. Useful for logging scripts
 
     """
-    local_email = "@".join([os.getenv("LOGNAME"), socket.gethostname()])
+    local_email = "@".join([getpass.getuser(), socket.gethostname()])
     send_from = send_from if send_from else local_email
     dest_to = dest_to if dest_to else [local_email]
 
@@ -221,7 +222,7 @@ def main():
                attachments=[__file__])
 
     print("Check the mail in your mailbox {0}".
-          format("@".join([os.getenv("LOGNAME"), socket.gethostname()])))
+          format("@".join([getpass.getuser(), socket.gethostname()])))
 
 if __name__ == "__main__":
     main()
