@@ -60,6 +60,11 @@ def arguments():
 
     parser = ArgumentParser(description=main_desc)
     parser.add_argument("file", nargs="+", help="The djvu file")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-d", dest="qlty", action="store_const", const="-d",
+                        help="no compression. Best quality but big files.")
+    group.add_argument("-z", dest="qlty", action="store_const", const="-z",
+                        help="zip compression. More quality, more size.")
     parser.add_argument("-v", "--version", action="version",
                         version="%(prog)s {0}".format(__version__),
                         help="show program's version number and exit")
@@ -67,11 +72,14 @@ def arguments():
 
 
 def process(command, fname):
+    """Process the external commands and report the errors."""
     errors = Popen(command, stderr=PIPE).stderr.readlines()
     for line in errors:
         print("{0}: {1}".format(fname.upper(), line.rstrip(os.linesep)))
 
+
 def main():
+    """Main section."""
     args = arguments().parse_args()
     djvu_files = args.file
 
@@ -84,7 +92,8 @@ def main():
             pdf = '{0}.pdf'.format(djvu_filename)
             process(['ddjvu', '-format=tiff', djvu, tiff], tiff)
             if os.path.exists(tiff):
-                process(['tiff2pdf', '-j', '-o', pdf, tiff], pdf)
+                quality = args.qlty if args.qlty else "-j"
+                process(['tiff2pdf', quality, '-o', pdf, tiff], pdf)
                 os.remove(tiff)
 
 
