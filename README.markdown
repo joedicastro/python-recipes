@@ -17,6 +17,10 @@ ingredients to cook bigger python apps.
  a given path. It reports what directories are new or deleted. Also reports the
  directories in which their size increases or decreases above threshold values.
 
+* **djvu2pdf.py**:
+
+ Converts a .djvu file into a .pdf file
+
 * **dpkg_diff.py**:
 
  Report by email changes in the packages installed on a debian based system and 
