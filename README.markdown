@@ -6,6 +6,11 @@ ingredients to cook bigger python apps.
 
 ### Files in ./src/
 
+* **bb_gh_sync.py**:
+
+ A mercurial post-push hook to maintain synced a repository to booth github and
+ bitbucket sites, using only a local mercurial repository. 
+
 * **check_execs.py**:
  
  Check if an executable program is present in the system. Useful for those 
