@@ -64,6 +64,11 @@ ingredients to cook bigger python apps.
  Send notification status messages through libnotify. These are popup messages 
  typical in some Linux distros like Ubuntu.
 
+* **pacman_diff.py**:
+
+ Report by email changes in the packages installed on a arch linux based system 
+ and writes an update list of all of them in a file. 
+
 * **rsync_fabfile.py**:
 
  A Fabric file for sync two directories (remote ⇄ local) with rsync.
