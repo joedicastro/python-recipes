@@ -1,4 +1,4 @@
-#!/usr/bin/env pythonThis script is about ...
+#!/usr/bin/env python
 # -*- coding: utf8 -*-
 
 """
