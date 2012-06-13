@@ -6,14 +6,13 @@
 """
 
 #==============================================================================
-import pdb; pdb.set_trace() ### XXX BREAKPOINT
 # This script maintain synced a repository to booth github and bitbucket sites,
 # using only a local mercurial repository. To do this, makes use of hg-git, the
-# paths defined in my local hg repo and the environment variable given by hg, to
-# push to the site non described in the command line argument. This way, it's
-# irrelevant which site I decided to push every time, booth are done by this
-# hook.
-##==============================================================================
+# paths defined in my local hg repo and the environment variable given by hg,
+# to push to the site non described in the command line argument. This way,
+# it's irrelevant which site I decided to push every time, booth are done by
+# this hook.
+#==============================================================================
 
 #==============================================================================
 #    Copyright 2012 joe di castro <joe@joedicastro.com>

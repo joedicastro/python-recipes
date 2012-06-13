@@ -5,11 +5,11 @@
     send_email.py: Various ways to send a email.
 """
 
-#===============================================================================
+#==============================================================================
 # This file provides various ways to send a email with python.
-#===============================================================================
+#==============================================================================
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2010 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
@@ -43,25 +43,27 @@ try:
     from email.mime.multipart import MIMEMultipart
     from email.utils import COMMASPACE, formatdate
 except ImportError:
-    # Checks the installation of the necessary python modules 
+    # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
     str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
 
-# The most simple way, in a Unix platform, sending email to user's local mailbox
-# via the local smtp server. Useful for scripts.
+
+# The most simple way, in a Unix platform, sending email to user's local
+# mailbox via the local smtp server. Useful for scripts.
 def send_mail_local(subject, text):
     """Send a mail to the user's local mailbox."""
     # Set the local mail address for the script' user
     email = "@".join([getpass.getuser(), socket.gethostname()])
-    msg = ("From: {0}\nTo: {0}\nSubject: {1}\n{2}".format(email, subject, text))
+    msg = ("From: {0}\nTo: {0}\nSubject: {1}\n{2}".format(email, subject,
+                                                          text))
     server = smtplib.SMTP("localhost")
     server.sendmail(email, email, msg)
     server.quit()
     return
 
 
-# This covers 80% of situations, rarely need more. Use the most common e-mail 
+# This covers 80% of situations, rarely need more. Use the most common e-mail
 # fields.
 def send_mail(subject, text, send_from="", dest_to=None, server="localhost",
               port=25, user="", passwd=""):
@@ -77,7 +79,7 @@ def send_mail(subject, text, send_from="", dest_to=None, server="localhost",
         (str) user -- the smtp server user (default "")
         (str) passwd --the smtp server password (default "")
 
-    If "send_from" or "dest_to" are empty or None, then script user's mailbox 
+    If "send_from" or "dest_to" are empty or None, then script user's mailbox
     is assumed instead. Useful for logging scripts
 
     """
@@ -85,7 +87,7 @@ def send_mail(subject, text, send_from="", dest_to=None, server="localhost",
     send_from = send_from if send_from else local_email
     dest_to = dest_to if dest_to else [local_email]
 
-    dest_to_addrs = COMMASPACE.join(dest_to) # receivers mails
+    dest_to_addrs = COMMASPACE.join(dest_to)  # receivers mails
     message = MIMEMultipart()
     message["Subject"] = subject
     message["From"] = send_from
@@ -125,8 +127,8 @@ def send_mail(subject, text, send_from="", dest_to=None, server="localhost",
     smtp_server.quit()
 
 
-# The more complete solution. This adds the Cc: (Carbon Copy) and Bcc: (Blind 
-# Carbon Copy) fields and the ability to add attachments. 
+# The more complete solution. This adds the Cc: (Carbon Copy) and Bcc: (Blind
+# Carbon Copy) fields and the ability to add attachments.
 def send_email(subject, text, send_from="", dest_to=None, attachments=None,
                send_cc=None, send_bcc=None, server="localhost", port=25,
                user="", passwd=""):
@@ -141,11 +143,11 @@ def send_email(subject, text, send_from="", dest_to=None, attachments=None,
         (list) send_cc -- a list of carbon copy's email addresses (def. None)
         (list) send_bcc -- a list of blind carbon copy's email addresses (None)
         (str) server -- the smtp server (default "localhost")
-        (int) port -- the smtp server port (default 25)                                    
+        (int) port -- the smtp server port (default 25)
         (str) user -- the smtp server user (default "")
         (str) passwd --the smtp server password (default "")
 
-    If "send_from" or "dest_to" are empty or None, then script user's mailbox 
+    If "send_from" or "dest_to" are empty or None, then script user's mailbox
     is assumed instead. Useful for logging scripts
 
     """
@@ -153,7 +155,7 @@ def send_email(subject, text, send_from="", dest_to=None, attachments=None,
     send_from = send_from if send_from else local_email
     dest_to = dest_to if dest_to else [local_email]
 
-    dest_to_addrs = dest_to # receivers mails including to, cc and bcc fields
+    dest_to_addrs = dest_to  # receivers mails including to, cc and bcc fields
     message = MIMEMultipart()
     message["Subject"] = subject
     message["From"] = send_from

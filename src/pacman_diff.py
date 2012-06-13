@@ -2,19 +2,19 @@
 # -*- coding: utf8 -*-
 
 """
-    pacman_diff.py: Report changes in the packages installed on a Arch based sys
+   pacman_diff.py: Report changes in the packages installed on a Arch based sys
 """
 
-#===============================================================================
+#==============================================================================
 # This script is intended to run periodically through cron. This generates a
 # list of packages installed on your system, and compares it with the one
 # generated in the previous run. If there are differences, then generates a
 # report that is saved to disk and sent by mail to the user who scheduled the
 # cron job. It checks the Linux Arch packaging system, and therefore works on
 # Arch and Arch based distros (Chakra, ArchBang, Parabola, ...)
-#===============================================================================
+#==============================================================================
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2012 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"

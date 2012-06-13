@@ -5,14 +5,14 @@
     ftp_server_test.py: Create a ftp server for test purposes.
 """
 
-#===============================================================================
+#==============================================================================
 # Create a ftp server for test purposes.
 #
 # Use Python FTP server library Project (pyftpdlib) by Giampaolo Rodola
 # <g.rodola@gmail.com> at http://code.google.com/p/pyftpdlib/
-#===============================================================================
+#==============================================================================
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2010 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
@@ -39,7 +39,7 @@ try:
     import os
     from pyftpdlib import ftpserver
 except ImportError:
-    # Checks the installation of the necessary python modules 
+    # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
     str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
@@ -52,7 +52,7 @@ def ftp_server(ftp_dir, user, password):
     authorizer.add_anonymous(ftp_dir)
     handler = ftpserver.FTPHandler
     handler.authorizer = authorizer
-    address = "127.0.0.1", 2121 # use 2121 to avoid security policies conflict
+    address = "127.0.0.1", 2121  # use 2121 to avoid security policies conflict
     ftpd = ftpserver.FTPServer(address, handler)
     ftpd.serve_forever()
 

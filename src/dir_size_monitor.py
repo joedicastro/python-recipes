@@ -5,19 +5,19 @@
     dir_size_monitor.py: Monitors changes in the size of dirs for a given path
 """
 
-#===============================================================================
+#==============================================================================
 # This Script monitors the changes in disk size for the directories included in
-# a given path. It reports what directories are new or deleted. Also reports the
-# directories in which their size increases or decreases above threshold values.
-# These threshold values refer to the amount in difference of size of the 
-# directory or/and the percentage difference. These values can be overrided by 
-# setting them to zero.
+# a given path. It reports what directories are new or deleted. Also reports
+# the directories in which their size increases or decreases above threshold
+# values.  These threshold values refer to the amount in difference of size of
+# the directory or/and the percentage difference. These values can be overrided
+# by setting them to zero.
 #
-# The final report is sended via email to the local user. This script is 
-# intended to run periodically (e.g. via cron) 
-#===============================================================================
+# The final report is sended via email to the local user. This script is
+# intended to run periodically (e.g. via cron)
+#==============================================================================
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2011 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
@@ -48,7 +48,7 @@ try:
     from notify import notify
     from get_size import best_unit_size, get_size_fast
 except ImportError:
-    # Checks the installation of the necessary python modules 
+    # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
     str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
@@ -63,6 +63,7 @@ def list4log(dirs_size_dict, wpath, dirs):
                     format(dsz['s'], dsz['u'], os.path.relpath(ldir, wpath)))
     return llst
 
+
 def diff4log(before, current, wpath, dirs, threshold_pct=0, threshold_sz=0):
     """Create a list of the directories that had size changes for the log."""
     llst = []
@@ -72,8 +73,8 @@ def diff4log(before, current, wpath, dirs, threshold_pct=0, threshold_sz=0):
         if abs(pct) >= threshold_pct and abs(diff) > threshold_sz:
             dsz = best_unit_size(diff)
             llst.append(" {0:8.2f} % {1:8.1f} {2}   ./{3}".
-                        format(pct, dsz['s'], dsz['u'], os.path.relpath(ddir,
-                                                                        wpath)))
+                        format(pct, dsz['s'], dsz['u'],
+                               os.path.relpath(ddir, wpath)))
     return llst
 
 
@@ -82,10 +83,10 @@ def main(first_exec=False):
     # The path to monitor changes in directories dir_size
     mon_pth = "/your/path/to/monitor"
 
-    # Ignore all directories that are below these percentage or absolute value 
+    # Ignore all directories that are below these percentage or absolute value
     # of size difference. There are optional, set to zero to override them.
-    thld_pct = 20      # In percentage of difference in size for a directory
-    thld_sz = 10.486E6 # In bytes of absolute value of directory size difference
+    thld_pct = 20       # In percentage of difference in size for a directory
+    thld_sz = 10.486E6  # In bytes of absolute value of directory size diff.
 
     # Prepare the log
     log = logger.Logger()
@@ -121,18 +122,17 @@ def main(first_exec=False):
     added = [d for d in crr_dir if d not in bfr_dir]
     changed = [d for d in crr_dir if d in bfr_dir if crr_dir[d] != bfr_dir[d]]
 
-
     log.list("Deleted directories", list4log(bfr_dir, mon_pth, deleted))
     log.list("New directories", list4log(crr_dir, mon_pth, added))
-    log.list("Changed directories", diff4log(bfr_dir, crr_dir, mon_pth, changed,
-                                             thld_pct, thld_sz))
+    log.list("Changed directories", diff4log(bfr_dir, crr_dir, mon_pth,
+                                             changed, thld_pct, thld_sz))
 
-    # If thresholds are nonzero, then report the values 
+    # If thresholds are nonzero, then report the values
     if thld_pct or thld_sz:
         tsz = best_unit_size(thld_sz)
         log.list("Threshold Values",
-                 ["The directories whose size differences are less than any of "
-                  "these values are ignored:", "",
+                 ["The directories whose size differences are less than any of"
+                  " these values are ignored:", "",
                   "Percentage: {0:6} %".format(thld_pct),
                   "Size:       {0:6.2f} {1}".format(tsz['s'], tsz['u'])])
 

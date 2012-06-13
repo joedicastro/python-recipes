@@ -5,7 +5,7 @@
      A Fabric file for sync two directories (remote ⇄ local) with rsync.
 """
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2011 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
@@ -39,23 +39,25 @@ from fabric.api import env, local
 
 LOG = _logger()
 
-#===============================================================================
+#==============================================================================
 # RSYNC HOSTS
-#===============================================================================
+#==============================================================================
 
 # Your default host. No need any more if only wants a host.
 env.host_string = "username@host"
 env.remote = "/your/remote/path"
 env.local = "/your/local/path"
 
-# If wants to use various hosts, then define the previous variables like this, 
-# one function per host. 
+
+# If wants to use various hosts, then define the previous variables like this,
+# one function per host.
 def _host_1():
     """Host variables for host_1."""
     global env
     env.host_string = "username@host_1"
     env.remote = "/your/remote/path/in/host_1"
     env.local = "/your/local/path/for/host_1"
+
 
 def _host_2():
     """Host variables for host_2."""
@@ -73,9 +75,10 @@ def _host_2():
 #     env.remote = "/your/remote/path/in/host_n"
 #     env.local = "/your/local/path/for/host_n"
 
-#===============================================================================
+#==============================================================================
 # END RSYNC HOSTS
-#===============================================================================
+#==============================================================================
+
 
 def _log_start():
     """Create the Start time info block for the log."""
@@ -84,18 +87,21 @@ def _log_start():
         LOG.__init__()
     LOG.time("Start time")
 
+
 def _log_end(task):
     """Create the End time info block and send & write the log."""
-    _notify("Rsync", "Ended" , "ok")
+    _notify("Rsync", "Ended", "ok")
     LOG.time("End time")
     LOG.free(os.linesep * 2)
     LOG.write(True)
     LOG.send("Fabric Rsync ({0})".format(task))
 
+
 def _check_local():
     """Create local directory if no exists."""
     if not os.path.exists(env.local):
         os.mkdir(env.local)
+
 
 def _rsync(source, target, delete):
     """Process the _rsync command."""
@@ -110,6 +116,7 @@ def _rsync(source, target, delete):
     LOG.list("Rsync Output", out)
     if out.failed:
         LOG.list("Rsync Errors", out.stderr)
+
 
 def _compress(path):
     """Compress a local directory into a gz file.
@@ -126,14 +133,17 @@ def _compress(path):
                                                                 gz_name)])
     for old_gz in old_gzs:
         os.remove(old_gz)
-        output += os.linesep.join([os.linesep, 'Deleted old file:', '', old_gz])
+        output += os.linesep.join([os.linesep, 'Deleted old file:', '',
+                                   old_gz])
     return output
+
 
 def _archive():
     """Archive the local directory in a gz file for each weekday."""
     _notify('Rsync', 'Compressing folder...', 'info')
     LOG.list('Rotate compressed copies', _compress(env.local))
     _notify("Rsync", "Finished compression", "ok")
+
 
 def _get_diskspace():
     """Get the disk space used by the local directory and archives."""
@@ -144,11 +154,13 @@ def _get_diskspace():
     size = _best_unit_size(local_size + gz_size + log_size)
     LOG.block('Disk space used', '{0:>76.2f} {1}'.format(size['s'], size['u']))
 
+
 def up(server=None, dlt='yes'):
     """Sync from local to remote."""
     globals()["_" + server]() if server else None
     _rsync(env.local, ":".join([env.host_string, env.remote]), dlt)
     _log_end(server)
+
 
 def down(server=None, dlt='yes', archive=False):
     """Sync from remote to local."""
@@ -159,10 +171,10 @@ def down(server=None, dlt='yes', archive=False):
         _get_diskspace()
         _log_end(server)
 
+
 def backup(server=None):
     """Sync from remote to local & archive the local directory."""
     down(server, archive=True)
     _archive()
     _get_diskspace()
     _log_end(server)
-

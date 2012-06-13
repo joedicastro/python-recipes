@@ -29,7 +29,7 @@ except ImportError:
     NO_GRAPHS = True
 
 
-#---------------------------------------------------------- For All Nested lists
+#--------------------------------------------------------- For All Nested lists
 
 # Best way, Best performance. Not recursive.
 # By Chema Cortes (http://Ch3m4.org) at http://python.majibu.org/preguntas/547/
@@ -41,6 +41,7 @@ def flat_slice(lst):
                isinstance(lst[i], basestring)):
             lst[i:i + 1] = lst[i]
     return lst
+
 
 # Seen at http://kogs-www.informatik.uni-hamburg.de/~meine/python_tricks
 # Good performance, but recursive (initial python recursion limit = 1K levels)
@@ -54,6 +55,7 @@ def flat_list(lst):
             result.append(elem)
     return result
 
+
 # By Ch3m4 Cortes (http://Ch3m4.org) at http://python.majibu.org/preguntas/547/
 # Poor performance.
 def flat_sum(lst):
@@ -61,6 +63,7 @@ def flat_sum(lst):
     return sum((flat_sum(elem) if
                 hasattr(elem, "__iter__") and not isinstance(elem, basestring)
                 else [elem] for elem in lst), [])
+
 
 # Seen at http://stackoverflow.com/questions/2158395#2158532
 # Poor performance.
@@ -91,7 +94,8 @@ def flat_yield(lst):
                 yield elm
     return list(flatten(lst))
 
-#---------------------------------------- For one level Nested list of iterables
+
+#--------------------------------------- For one level Nested list of iterables
 
 ## Working only in a one level nesting ##
 
@@ -100,31 +104,33 @@ def flatten_one_liner(lst):
     """A one-liner nested lists flattener."""
     return list(itertools.chain.from_iterable(lst))
 
+
 # No needs import extra modules
 def flattener(lst):
     """A one-liner nested lists flattener."""
     return [item for sublist in lst for item in sublist]
 
 
-#------------------------------------------------------------- For list of lists
+#------------------------------------------------------------ For list of lists
 
 # Only for a one level list of lists
 def flattener_sum(lst):
     "A one-liner only for a list of lists"
     return sum(lst, [])
 
-#....................................................... A nested list generator
+
+#...................................................... A nested list generator
 
 # This function generates nested lists, with the desired number of elements and
 # levels of nesting. It's composed of integers and strings or only integers.
-# It's intended to generate a regular structure, whatever the number of elements
-# or levels. The intention is that when measuring performance, you get regular
-# results in order to measure with precision the variation in performance
-# depending on the number of elements and / or levels. This structure is like a
-# list of nested lists, as a metaphor in the real world would be a field of
-# ziggurats (stone step pyramids), hence its name. As an option you can create
-# lists that contain generators to test that functions are not capable of
-# handling these items.
+# It's intended to generate a regular structure, whatever the number of
+# elements or levels. The intention is that when measuring performance, you get
+# regular results in order to measure with precision the variation in
+# performance depending on the number of elements and / or levels. This
+# structure is like a list of nested lists, as a metaphor in the real world
+# would be a field of ziggurats (stone step pyramids), hence its name. As an
+# option you can create lists that contain generators to test that functions
+# are not capable of handling these items.
 
 def ziggurat(stones=1, steps=1, with_iters=False, only_numbers=False):
     """Make a list of nested lists, like a field of ziggurats."""
@@ -211,7 +217,7 @@ if __name__ == "__main__":
               (1, u"elements = | ↑ levels",
                [(10, n) for n in range(10, 1610, 10)], 312),
               (2, u"elements ↑ | ↑ levels",
-               [(n * 2 , n) for n in range(10, 1610, 10)], 313)]
+               [(n * 2, n) for n in range(10, 1610, 10)], 313)]
 
     # Prepare the plot
     if not NO_GRAPHS:
@@ -226,9 +232,9 @@ if __name__ == "__main__":
                 nlst = ziggurat(n, l, with_iterables)
             for f in DEFS:
                 # I know, is not the same list for all the functions, but it
-                # is the problem with iterables, they are single use only. 
-                # Anyway the list structure is the same, just change the 
-                # elements. So do not alter the results, only slows the test 
+                # is the problem with iterables, they are single use only.
+                # Anyway the list structure is the same, just change the
+                # elements. So do not alter the results, only slows the test
                 # process.
                 if with_iterables:
                     nlst = ziggurat(n, l, with_iterables)
@@ -237,7 +243,7 @@ if __name__ == "__main__":
                     CUR.execute("insert into results values (?, ?, ?, ?, ?)",
                                 (graph, f, n, l, tim * 1e2))
                 except:
-                    # Uncomment only for debugging. It Normally Fail when reach 
+                    # Uncomment only for debugging. It Normally Fail when reach
                     # Python recursion limit (1K levels)
                     #print("{0} error: {1}".format(f, str(sys.exc_info()[1])))
                     CUR.execute("insert into results values (?, ?, ?, ?, ?)",

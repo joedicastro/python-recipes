@@ -5,14 +5,14 @@
     test_dir_tree.py: Make a fake dir hierarchy with files for test purposes
 """
 
-#===============================================================================
+#==============================================================================
 # This Script makes a fake dir hierarchy with files for test purposes
 #
-# Uses the Lorem-Ipsum-Generator project by James Hales <jhales.perth@gmail.com>
-# at http://code.google.com/p/lorem-ipsum-generator/
-#===============================================================================
+# Uses the Lorem-Ipsum-Generator project by James Hales
+# <jhales.perth@gmail.com> at http://code.google.com/p/lorem-ipsum-generator/
+#==============================================================================
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2010 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
@@ -73,7 +73,7 @@ def test_tree(path, min_dirs=7, max_dirs=79):
     for fil in files:
         filename = os.path.join(path, choice(dirs), '{0}.txt'.format(fil))
         text = ''
-        size = randint(3, 524288) # Files not bigger than 512 Kbytes
+        size = randint(3, 524288)  # Files not bigger than 512 Kbytes
         sample = lorem.generate_paragraphs_plain(randrange(3, 9))
         while len(text) < size:
             text += sample + os.linesep * 2
@@ -81,6 +81,7 @@ def test_tree(path, min_dirs=7, max_dirs=79):
             out.write(text[:size])
 
     return dirs, files
+
 
 def main():
     """Main section"""

@@ -5,11 +5,11 @@
     notify.py: Send notification status messages through libnotify.
 """
 
-#===============================================================================
+#==============================================================================
 # Send notification status messages through libnotify.
-#===============================================================================
+#==============================================================================
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2010 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -24,15 +24,15 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
 __date__ = "14/05/2012"
 __version__ = "0.3"
 
-# Notify it's not essential and libnotify it's not always installed (in Ubuntu &
-# Debian it's optional) but it's very useful to show popup messages
+# Notify it's not essential and libnotify it's not always installed (in Ubuntu
+# & Debian it's optional) but it's very useful to show popup messages
 try:
     import pynotify
     import gtk

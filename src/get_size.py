@@ -5,7 +5,7 @@
     get_dir_size.py: Various ways to calculate the size of a directory tree.
 """
 
-#===============================================================================
+#==============================================================================
 # Various ways to calculate the size of a directory tree or a single file.
 # Include methods to convert a size in bytes to the best standard IEC binary
 # prefix to improve readability.
@@ -27,9 +27,9 @@
 #  zebibyte   ZiB    2⁷⁰    zettabyte   ZB    10²¹      1 ZiB      1.181 EB
 #  yobibyte   YiB    2⁸⁰    yottabyte   YB    10²⁴      1 YiB      1.209 ZB
 #
-#===============================================================================
+#==============================================================================
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2010 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
@@ -124,17 +124,17 @@ def best_unit_size(bytes_size):
     "b" -- (int / long) The original size in bytes
 
     """
-    for exp in range(0, 90 , 10):
+    for exp in range(0, 90, 10):
         bu_size = abs(bytes_size) / pow(2.0, exp)
         if int(bu_size) < 2 ** 10:
-            unit = {0:"bytes", 10:"KiB", 20:"MiB", 30:"GiB", 40:"TiB", 50:"PiB",
-                    60:"EiB", 70:"ZiB", 80:"YiB"}[exp]
+            unit = {0: "bytes", 10: "KiB", 20: "MiB", 30: "GiB", 40: "TiB",
+                    50: "PiB", 60: "EiB", 70: "ZiB", 80: "YiB"}[exp]
             break
-    return {"s":bu_size, "u":unit, "b":bytes_size}
+    return {"s": bu_size, "u": unit, "b": bytes_size}
 
 
-# Combination of calculating the size in bytes and conversion to best IEC prefix
-# in one function.
+# Combination of calculating the size in bytes and conversion to best IEC
+# prefix in one function.
 def get_unit_size(the_path):
     """Calculate size of a directory/file & convert it for the best IEC prefix.
 
@@ -154,13 +154,13 @@ def get_unit_size(the_path):
             bytes_size += os.lstat(os.path.join(path, directory)).st_size
     bytes_size += os.path.getsize(the_path)
 
-    for exp in range(0, 90 , 10):
+    for exp in range(0, 90, 10):
         bu_size = abs(bytes_size) / pow(2.0, exp)
         if int(bu_size) < 2 ** 10:
-            unit = {0:"bytes", 10:"KiB", 20:"MiB", 30:"GiB", 40:"TiB", 50:"PiB",
-                    60:"EiB", 70:"ZiB", 80:"YiB"}[exp]
+            unit = {0: "bytes", 10: "KiB", 20: "MiB", 30: "GiB", 40: "TiB",
+                    50: "PiB", 60: "EiB", 70: "ZiB", 80: "YiB"}[exp]
             break
-    return {"s":bu_size, "u":unit, "b":bytes_size}
+    return {"s": bu_size, "u": unit, "b": bytes_size}
 
 
 class GetSize:
@@ -188,11 +188,12 @@ class GetSize:
     def from_bytes(self, sz_bytes):
         """Get size & IEC prefix from size in bytes."""
         self.bytes = sz_bytes
-        for exp in range(0, 90 , 10):
+        for exp in range(0, 90, 10):
             self.size = abs(self.bytes) / pow(2.0, exp)
             if int(self.size) < 2 ** 10:
-                self.unit = {0:"bytes", 10:"KiB", 20:"MiB", 30:"GiB", 40:"TiB",
-                             50:"PiB", 60:"EiB", 70:"ZiB", 80:"YiB"}[exp]
+                self.unit = {0: "bytes", 10: "KiB", 20: "MiB", 30: "GiB",
+                             40: "TiB", 50: "PiB", 60: "EiB", 70: "ZiB",
+                             80: "YiB"}[exp]
                 break
 
     def from_path(self, a_path):
@@ -204,6 +205,7 @@ class GetSize:
                 self.bytes += os.lstat(os.path.join(path, directory)).st_size
         self.bytes += os.path.getsize(a_path)
         self.from_bytes(self.bytes)
+
 
 def main():
     """Main section"""
@@ -222,7 +224,7 @@ def main():
     # Show results from standard *NIX command 'du'
     print("  Space     in bytes       'du' Diff      Time")
     print("  =====     ========       =========      ====")
-    print("$ du -bs".center(50) + os.linesep + ("-"* 8).center(50))
+    print("$ du -bs".center(50) + os.linesep + ("-" * 8).center(50))
     tm_du_start = time.time()
     bytes_du = int(Popen(["du", "-bs", my_path], stdout=PIPE).stdout.
                 readlines()[0].split()[0])
@@ -234,7 +236,7 @@ def main():
     # Show results of the distinct Python methods to compare speed & precision
     for fnct in functions:
         fname = fnct.__name__
-        print(fname.center(50) + os.linesep + ("-"* len(fname)).center(50))
+        print(fname.center(50) + os.linesep + ("-" * len(fname)).center(50))
         bytes_fn, time_fn = timeit(fnct, my_path)
         sz_fn = best_unit_size(bytes_fn)
         diff_fn = best_unit_size(bytes_du - sz_fn["b"])
@@ -265,4 +267,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

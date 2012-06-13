@@ -5,12 +5,12 @@
     check_execs.py: Check if an executable program is present in the system.
 """
 
-#===============================================================================
-# Check if an executable program is present in the system. Useful for those 
+#==============================================================================
+# Check if an executable program is present in the system. Useful for those
 # scripts that requires external programs and don't have an install process.
-#===============================================================================
+#==============================================================================
 
-#===============================================================================
+#==============================================================================
 #    Copyright 2010 joe di castro <joe@joedicastro.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+#==============================================================================
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
@@ -39,7 +39,7 @@ try:
     from  re import findall
     from subprocess import Popen, PIPE
 except ImportError:
-    # Checks the installation of the necessary python modules 
+    # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
     str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
@@ -52,7 +52,7 @@ def check_execs(*progs):
         try:
             Popen([prog, '--help'], stdout=PIPE, stderr=PIPE)
         except OSError:
-            msg = 'The {0} program is necessary to run this script'.format(prog)
+            msg = 'The {0} program is necessary to run this.'.format(prog)
             sys.exit(msg)
     return
 
@@ -62,19 +62,19 @@ def check_execs_posix_win(progs):
     """Check if the program is installed.
 
     Returns one  dictionary with 1+n pair of key/values:
-    
+
     A fixed key/value:
-    
+
     "WinOS" -- (boolean) True it's a Windows OS, False it's a *nix OS
-    
+
     for each program in progs a key/value like this:
-    
-    "program"  -- (str or boolean) The Windows executable path if founded else 
-                                   '' if it's Windows OS. If it's a *NIX OS True
-                                   if founded else False 
+
+    "program"  -- (str or boolean) The Windows executable path if founded else
+                                   '' if it's Windows OS. If it's a *NIX OS
+                                   True if founded else False
 
     """
-    execs = {'WinOS':True if platform.system() == 'Windows' else False}
+    execs = {'WinOS': True if platform.system() == 'Windows' else False}
     # get all the drive unit letters if the OS is Windows
     windows_drives = findall(r'(\w:)\\',
                              Popen('fsutil fsinfo drives', stdout=PIPE).
@@ -86,7 +86,7 @@ def check_execs_posix_win(progs):
             # Set all commands to search the executable in all drives
             win_cmds = ['dir /B /S {0}\*{1}.exe'.format(letter, prog) for
                         letter in windows_drives]
-            # Get the first location (usually in C:) where the executable exists
+            # Get the first location (usually C:) where the executable exists
             for cmd in win_cmds:
                 execs[prog] = (Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True).
                                communicate()[0].split(os.linesep)[0])
