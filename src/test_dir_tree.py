@@ -32,14 +32,15 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "24/10/2010"
-__version__ = "0.1"
+__date__ = "29/6/2012"
+__version__ = "0.2"
 
 try:
     import sys
     import os
     import lipsum
     from random import randint, randrange, choice
+    from textwrap import fill
 except ImportError:
     # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
@@ -47,18 +48,20 @@ except ImportError:
     sys.exit(-2)
 
 
+def latin_words(generator):
+    """Generate a list of latin words"""
+    words = generator.generate_paragraphs_plain(9).lower()
+    return list(set(words.replace('.', '').replace(',', '').split()))
+
+
+def check_path(path):
+    """If no exists a path, make it."""
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+
 def test_tree(path, min_dirs=7, max_dirs=79):
     """make a fake directory hierarchy with files for test purposes."""
-
-    def latin_words(generator):
-        """Generate a list of latin words"""
-        words = generator.generate_paragraphs_plain(9).lower()
-        return list(set(words.replace('.', '').replace(',', '').split()))
-
-    def check_path(path):
-        """If no exists a path, make it."""
-        if not os.path.exists(path):
-            os.mkdir(path)
 
     lorem = lipsum.MarkupGenerator()
     latins = latin_words(lorem)
@@ -76,7 +79,8 @@ def test_tree(path, min_dirs=7, max_dirs=79):
         size = randint(3, 524288)  # Files not bigger than 512 Kbytes
         sample = lorem.generate_paragraphs_plain(randrange(3, 9))
         while len(text) < size:
-            text += sample + os.linesep * 2
+            text += os.linesep.join([fill(l, 79) for l in
+                                    sample.split(os.linesep)]) + os.linesep * 2
         with open(filename, 'w') as out:
             out.write(text[:size])
 
@@ -94,3 +98,17 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+###############################################################################
+#                                  Changelog                                  #
+###############################################################################
+#
+# 0.2:
+#
+# * Wrap text paragraphs to 79 chars
+# * Refactorization
+#
+# 0.1:
+#
+# * First attempt
+#
