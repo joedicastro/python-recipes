@@ -36,22 +36,37 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "06/07/2011"
-__version__ = "0.3"
+__date__ = "21/11/2012"
+__version__ = "0.4"
 
 try:
-    import sys
-    import os
-    import platform
-    import pickle
     import logger
-    from notify import notify
+    import os
+    import pickle
+    import platform
+    import sys
+    from argparse import ArgumentParser
     from get_size import best_unit_size, get_size_fast
+    from notify import notify
 except ImportError:
     # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
-    str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
+          str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
+
+
+def arguments():
+    """Defines the command line arguments for the script."""
+    main_desc = """Monitors changes in the size of dirs for a given path"""
+
+    parser = ArgumentParser(description=main_desc)
+    parser.add_argument("path", default=os.path.expanduser('~'), nargs='?',
+                        help="The path to monitor. If none is given, takes the"
+                        " home directory")
+    parser.add_argument("-v", "--version", action="version",
+                        version="%(prog)s {0}".format(__version__),
+                        help="show program's version number and exit")
+    return parser
 
 
 def list4log(dirs_size_dict, wpath, dirs):
@@ -80,8 +95,11 @@ def diff4log(before, current, wpath, dirs, threshold_pct=0, threshold_sz=0):
 
 def main(first_exec=False):
     """Main section"""
-    # The path to monitor changes in directories dir_size
-    mon_pth = "/your/path/to/monitor"
+
+    # The path to monitor changes in directories dir_size. By default, if none
+    # is given, takes the home directory.
+    args = arguments().parse_args()
+    mon_pth = args.path
 
     # Ignore all directories that are below these percentage or absolute value
     # of size difference. There are optional, set to zero to override them.
