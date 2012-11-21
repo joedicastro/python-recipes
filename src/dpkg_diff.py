@@ -33,23 +33,37 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "06/05/2011"
-__version__ = "0.1"
+__date__ = "21/11/2012"
+__version__ = "0.2"
 
 try:
-    import sys
-    import os
-    import time
     import platform
-    from re import findall, split
-    from subprocess import Popen, PIPE
+    import os
+    import sys
+    import time
+    from argparse import ArgumentParser
     from difflib import unified_diff
     from logger import Logger
+    from re import findall, split
+    from subprocess import Popen, PIPE
 except ImportError:
     # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
-    str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
+          str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
+
+
+def arguments():
+    """Defines the command line arguments for the script."""
+    desc = """Report changes in the packages installed on a debian based sys"""
+
+    parser = ArgumentParser(description=desc)
+    parser.add_argument("path", default='./package_list.txt', nargs='?',
+                        help="The path to store the debian packages list file")
+    parser.add_argument("-v", "--version", action="version",
+                        version="%(prog)s {0}".format(__version__),
+                        help="show program's version number and exit")
+    return parser
 
 
 def pretty_diff(diff):
@@ -82,7 +96,8 @@ def main(old=""):
     """Main section"""
 
     # The path to store the debian packages list file
-    pkg_lst_file = "./package_list.txt"
+    args = arguments().parse_args()
+    pkg_lst_file = args.path
 
     # Start logging
     log = Logger()
