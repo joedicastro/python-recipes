@@ -72,7 +72,10 @@ def notify(title, msg, icon=None, wrap=None):
         note.set_icon_from_pixbuf(gtk_icon)
     except KeyError:
         note = pynotify.Notification(title, msg, icon)
-    note.show()
+    try:
+        note.show()
+    except Exception, e:
+        print(e)
 
 
 def main():
@@ -89,8 +92,8 @@ def main():
            '''
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
 tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
-vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet.
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
            ''', wrap=60)
 
 
