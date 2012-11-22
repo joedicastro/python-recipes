@@ -37,8 +37,8 @@ __date__ = "21/11/2012"
 __version__ = "0.2"
 
 try:
-    import platform
     import os
+    import platform
     import sys
     import time
     from argparse import ArgumentParser
