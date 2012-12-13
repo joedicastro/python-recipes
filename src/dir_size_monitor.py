@@ -108,7 +108,7 @@ def main(first_exec=False):
 
     # Prepare the log
     log = logger.Logger()
-    url = "http://code.joedicastro.com/python-recipes"
+    url = "http://joedicastro.com"
     head = ("Changes in size of directories for {0} on {1}".
             format(mon_pth, platform.node()))
     log.header(url, head)

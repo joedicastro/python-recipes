@@ -268,7 +268,7 @@ class Logger():
 
 def main():
     """Main section"""
-    url = 'http://code.joedicastro.com/python-recipes'
+    url = 'http://joedicastro.com'
     head = 'This is a test of class Logger'
 
     log = Logger()

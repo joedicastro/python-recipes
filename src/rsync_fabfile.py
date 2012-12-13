@@ -106,7 +106,7 @@ def _check_local():
 def _rsync(source, target, delete):
     """Process the _rsync command."""
     _log_start()
-    LOG.header("Fabric Rsync\nhttp://code.joedicastro.com/python-recipes",
+    LOG.header("Fabric Rsync\nhttp://joedicastro.com",
                "Syncing {0} to {1}".format(source, target))
     _notify("Rsync", "Start syncing {0} to {1}".format(source, target), "info")
     out = local("rsync -pthrvz {2} {0}/ {1}".

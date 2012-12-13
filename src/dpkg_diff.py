@@ -101,7 +101,7 @@ def main(old=""):
 
     # Start logging
     log = Logger()
-    url = "http://code.joedicastro.com/python-recipes"
+    url = "http://joedicastro.com"
     head = "Changes of packages installed on {0}".format(platform.node())
     log.header(url, head)
     log.time("Start time")
