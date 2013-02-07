@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
 """
@@ -45,7 +45,7 @@ try:
 except ImportError:
     # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
-    str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
+          str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
 
 

@@ -69,6 +69,14 @@ ingredients to cook bigger python apps.
  Report by email changes in the packages installed on a arch linux based system 
  and writes an update list of all of them in a file. 
 
+* **rsync_backup.py**:
+
+ A script to make a backup via Rsync. Intended to be used periodically in a cron
+ job to maintain a local backup of a path in an another localization (e.g.
+ another drive) and to take advantage of the rsync's speed and minimal
+ footprint. It's ideal for those cases in which a RAID 1, a regular backup app
+ or a DCVS may not be the best option to maintain a mirrored copy.
+
 * **rsync_fabfile.py**:
 
  A Fabric file for sync two directories (remote ⇄ local) with rsync.

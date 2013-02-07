@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
 """
@@ -59,7 +59,7 @@ try:
 except ImportError:
     # Checks the installation of the necessary python modules
     print((os.linesep * 2).join(["An error found importing one module:",
-    str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
+          str(sys.exc_info()[1]), "You need to install it", "Stopping..."]))
     sys.exit(-2)
 
 
@@ -227,7 +227,7 @@ def main():
     print("$ du -bs".center(50) + os.linesep + ("-" * 8).center(50))
     tm_du_start = time.time()
     bytes_du = int(Popen(["du", "-bs", my_path], stdout=PIPE).stdout.
-                readlines()[0].split()[0])
+                   readlines()[0].split()[0])
     tm_du = time.time() - tm_du_start
     sz_du = best_unit_size(bytes_du)
     print("{0:.1f} {1} {2:12}         n/a {3:12.4f}s".
