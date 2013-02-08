@@ -74,7 +74,7 @@ def main():
         notify('Rsync Backup', 'Backup ended', 'ok')
 
     if args.send:
-        log.send('Backup')
+        log.send('Rsync backup')
     log.write(True)
 
 

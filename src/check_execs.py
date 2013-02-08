@@ -36,7 +36,7 @@ try:
     import sys
     import os
     import platform
-    from  re import findall
+    from re import findall
     from subprocess import Popen, PIPE
 except ImportError:
     # Checks the installation of the necessary python modules
@@ -88,7 +88,7 @@ def check_execs_posix_win(progs):
                         letter in windows_drives]
             # Get the first location (usually C:) where the executable exists
             for cmd in win_cmds:
-                execs[prog] = (Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True).
+                execs[prog] = (Popen(cmd, stdout=PIPE, stderr=PIPE, shell=1).
                                communicate()[0].split(os.linesep)[0])
                 if execs[prog]:
                     break

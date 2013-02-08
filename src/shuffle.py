@@ -151,7 +151,7 @@ def main(iterations, array):
 
         print(os.linesep + 'Mean deviation:'.center(50))
         print('\302\261{0:.3f}%'.format(mean_deviation).center(50) +
-                                        os.linesep)
+              os.linesep)
 
         # Plot the bar graphs
         plt.subplot(int("1{0}{1}".format(len(defs), idx)))
