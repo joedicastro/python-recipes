@@ -4,16 +4,16 @@ A set of various classes, modules, templates... like a bunch of recipes or
 ingredients to cook bigger python apps.
 
 
-### Files in ./src/
+### Files in the repository
 
 * **bb_gh_sync.py**:
 
  A mercurial post-push hook to maintain synced a repository to booth github and
- bitbucket sites, using only a local mercurial repository. 
+ bitbucket sites, using only a local mercurial repository.
 
 * **check_execs.py**:
- 
- Check if an executable program is present in the system. Useful for those 
+
+ Check if an executable program is present in the system. Useful for those
  scripts that requires external programs and don't have an install process.
 
 * **dir_size_monitor.py**:
@@ -28,8 +28,8 @@ ingredients to cook bigger python apps.
 
 * **dpkg_diff.py**:
 
- Report by email changes in the packages installed on a debian based system and 
- writes an update list of all of them in a file. 
+ Report by email changes in the packages installed on a debian based system and
+ writes an update list of all of them in a file.
 
 * **flatten_nested_lists.py**:
 
@@ -56,18 +56,18 @@ ingredients to cook bigger python apps.
 
 * **move_by_ext.py**:
 
- A script that find files by a given extension into a directory hierarchy and 
+ A script that find files by a given extension into a directory hierarchy and
  then move (or copy/remove) all of them to the given destination path.
 
 * **notify.py**:
 
- Send notification status messages through libnotify. These are popup messages 
+ Send notification status messages through libnotify. These are popup messages
  typical in some Linux distros like Ubuntu.
 
 * **pacman_diff.py**:
 
- Report by email changes in the packages installed on a arch linux based system 
- and writes an update list of all of them in a file. 
+ Report by email changes in the packages installed on a arch linux based system
+ and writes an update list of all of them in a file.
 
 * **rsync_backup.py**:
 
@@ -82,32 +82,32 @@ ingredients to cook bigger python apps.
  A Fabric file for sync two directories (remote ⇄ local) with rsync.
 
 * **send_email.py**:
- 
- This file provides various ways to send an email with python. From the simplest 
- method using the local user and server (in *NIX systems), to the more complex, 
+
+ This file provides various ways to send an email with python. From the simplest
+ method using the local user and server (in *NIX systems), to the more complex,
  with the ability to add attachments and use the e-mail fields Cc: and Bcc:
- 
+
 * **shuffle.py**:
 
- *Obviously not mine, various famous algorithms*. Various ways to do an 
- efficient and rigorous random shuffle from a set. Guaranteeed unbiased result. 
+ *Obviously not mine, various famous algorithms*. Various ways to do an
+ efficient and rigorous random shuffle from a set. Guaranteeed unbiased result.
 
-* **smtp_server_test.py**: 
+* **smtp_server_test.py**:
 
  Create a local SMTP server for test purposes.
 
 * **template.py**:
 
- Basic template for my scripts. Also implements a basic check for the required 
+ Basic template for my scripts. Also implements a basic check for the required
  modules, and show an error message if nedeed.
 
 * **test_dir_tree.py**:
 
- Creates a fake hierarchy of directories and files.  A complete directory tree 
+ Creates a fake hierarchy of directories and files.  A complete directory tree
  mainly for testing. Latin words used to be more user friendly and readable.
 
 * **web_lxml.py**:
 
  Reads a webpage with lxml and prints its element tree. Prints the structure of
- the object element, which is a list of lists, a tree structure. We use it to 
+ the object element, which is a list of lists, a tree structure. We use it to
  locate those elements you want to parse to extract the necessary data.
