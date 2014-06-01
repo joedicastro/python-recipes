@@ -12,8 +12,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "07/02/2013"
-__version__ = "0.1"
+__date__ = "2014/06/01"
+__version__ = "0.2"
 
 
 try:
@@ -41,6 +41,8 @@ def arguments():
                         help="show popup notifications")
     parser.add_argument("-s", dest="send", action="store_true",
                         help="send a log via mail to the current local user")
+    parser.add_argument("-e", dest="exclude",
+                        help="a comma separated list of directories to exclude")
     parser.add_argument("-v", "--version", action="version",
                         version="%(prog)s {0}".format(__version__),
                         help="show program's version number and exit")
@@ -50,8 +52,14 @@ def arguments():
 def main():
     """Main section"""
     args = arguments().parse_args()
-    options = "-azxhvP --delete --ignore-errors --stats"
-    command = "rsync {2} {0} {1}/".format(args.source, args.backup, options)
+    options = "-azxhvP --delete --force --ignore-errors --stats"
+    command = "rsync {2} {3} {0} {1}/".format(
+        args.source,
+        args.backup,
+        options,
+        " ".join("--exclude={0}".format(i) for i in args.exclude.split(","))
+    )
+    print command
 
     log = Logger()
     url = "http://joedicastro.com"
