@@ -24,8 +24,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "06/08/2011"
-__version__ = "0.5"
+__date__ = "2014/06/01"
+__version__ = "0.6"
 
 import os
 import glob
@@ -47,7 +47,7 @@ LOG = _logger()
 env.host_string = "username@host"
 env.remote = "/your/remote/path"
 env.local = "/your/local/path"
-
+env.use_ssh_config = True
 
 # If wants to use various hosts, then define the previous variables like this,
 # one function per host.
