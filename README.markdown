@@ -69,6 +69,13 @@ ingredients to cook bigger python apps.
  Report by email changes in the packages installed on a arch linux based system
  and writes an update list of all of them in a file.
 
+* **remove_duplicates.py**:
+
+ Delete duplicate files in a directory, the type of files to delete can be
+ filtered by extension. It not tries to find out which file of each set of
+ duplicates is the original, it simple assumes that the oldest one is the one to
+ be preserved.
+
 * **rsync_backup.py**:
 
  A script to make a backup via Rsync. Intended to be used periodically in a cron
