@@ -73,7 +73,7 @@ def arguments():
 def remove_dup_files(args, count=0):
     """Remove duplicate files in a directory."""
     os.chdir(args.path)
-    filtered = sorted(glob.glob("*.{0}".format(args.ext)))
+    filtered = glob.glob("*.{0}".format(args.ext))
     unique, total = set(), len(filtered)
 
     # Even when MD5 is fundamentally broken for cryptographic uses, in
