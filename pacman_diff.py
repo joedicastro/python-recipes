@@ -33,8 +33,8 @@
 
 __author__ = "joe di castro <joe@joedicastro.com>"
 __license__ = "GNU General Public License version 3"
-__date__ = "21/11/2012"
-__version__ = "0.2"
+__date__ = "2016-02-01"
+__version__ = "0.3"
 
 try:
     import os
@@ -84,8 +84,11 @@ def main(old=""):
         old = open(pkg_lst_file, 'r').readlines()
         old_date = time.ctime(os.stat(pkg_lst_file).st_mtime)
 
-    # Get the current list of arch packages installed on system
-    current = Popen(["pacman", "-Q"], stdout=PIPE).stdout.readlines()
+    # Get the current list of arch packages installed on system (only the ones
+    # that were explicity installed)
+    official = Popen(["pacman", "-Qen"], stdout=PIPE).stdout.readlines()
+    aur = Popen(["pacman", "-Qem"], stdout=PIPE).stdout.readlines()
+    current = sorted(official + aur)
 
     # First, save the list file
     with open(pkg_lst_file, 'w') as out:
